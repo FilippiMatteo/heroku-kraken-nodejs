@@ -1,19 +1,54 @@
 var express = require('express');
 var router = express.Router();
 var fs = require("fs");
-
+var axios = require("axios");
 
 const KrakenClient = require('kraken-api');
-const {key,secret} = require ( '../Kraken_Keys');
+// const {key,secret} = require ( '../Kraken_Keys');
 
-const kraken = new KrakenClient(key, secret);
+let kraken;
+
+const initKraken = async () => {
+    console.log("init Kraken")
+    const response = await axios.get('http://localhost:3001/api');
+    let key = response.data.key;
+    console.log(response.data);
+    let secret = response.data.secret;
+
+    kraken = new KrakenClient(key,secret);
+    console.dir(kraken)
+
+}
 
 
-router.post('/getSecretKey', function (req, res, next) {
-   res.send ({key,secret});
+initKraken();
+
+router.post('/getSecretKey', async function (req, res, next) {
+    try {
+        const response = await axios.get('http://localhost:3001/api')
+        res.json(response.data);
+    } catch (err) {
+        res.status(500).json({ error: err });
+    }
+});
+
+router.post('/setSecretKey', async function (req, res, next) {
+    try {
+        const response = await axios.post('http://localhost:3001/api', { "key": req.body.key, "secret": req.body.secret})
+        res.json("Apikey Secret");
+
+    } catch (err) {
+        res.status(500).json({ error: err });
+    }
 
 });
-router.post('/setSecretKey', function (req, res, next) {
+
+
+/*router.post('/getSecretKey', function (req, res, next) {
+   res.send ({key,secret});
+
+});*/
+/*router.post('/setSecretKey', function (req, res, next) {
   try{
     (async () => {
       if(req.body){
@@ -49,7 +84,7 @@ router.post('/setSecretKey', function (req, res, next) {
 
 
 
-});
+});*/
 
 
 // pairs XXBTZUSD - ETHXBT
@@ -173,7 +208,7 @@ router.get('/balance', function (req, res, next) {
             console.dir(response);
             // res.json(response)
             res.status(200).json(response);
-        }).catch(()=>{
+        }).catch((e)=>{
           console.log("dentro il catch");
           res.status("500").json("Error");
         });
