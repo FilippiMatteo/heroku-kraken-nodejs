@@ -1,23 +1,21 @@
 var express = require('express');
 var router = express.Router();
-var fs = require("fs");
 var axios = require("axios");
 
-const KrakenClient = require('kraken-api');
-// const {key,secret} = require ( '../Kraken_Keys');
+const port = process.env.PORT || 6666;
 
-let kraken;
+
+const KrakenClient = require('kraken-api');
+
+let kraken=null;
 
 const initKraken = async () => {
-    console.log("init Kraken")
-    const response = await axios.get('http://localhost:3001/api');
-    let key = response.data.key;
-    console.log(response.data);
-    let secret = response.data.secret;
-
-    kraken = new KrakenClient(key,secret);
-    console.dir(kraken)
-
+    try {
+        const response = await axios.get('http://localhost:'+port+'/api');
+        kraken = new KrakenClient(response.data.key, response.data.secret);
+    } catch (err) {
+        console.error(err);
+    }
 }
 
 
@@ -25,7 +23,7 @@ initKraken();
 
 router.post('/getSecretKey', async function (req, res, next) {
     try {
-        const response = await axios.get('http://localhost:3001/api')
+        const response = await axios.get('http://localhost:'+port+'/api')
         res.json(response.data);
     } catch (err) {
         res.status(500).json({ error: err });
@@ -34,7 +32,7 @@ router.post('/getSecretKey', async function (req, res, next) {
 
 router.post('/setSecretKey', async function (req, res, next) {
     try {
-        const response = await axios.post('http://localhost:3001/api', { "key": req.body.key, "secret": req.body.secret})
+        const response = await axios.post('http://localhost:'+port+'/api', { "key": req.body.key, "secret": req.body.secret})
         res.json("Apikey Secret");
 
     } catch (err) {
@@ -44,47 +42,7 @@ router.post('/setSecretKey', async function (req, res, next) {
 });
 
 
-/*router.post('/getSecretKey', function (req, res, next) {
-   res.send ({key,secret});
 
-});*/
-/*router.post('/setSecretKey', function (req, res, next) {
-  try{
-    (async () => {
-      if(req.body){
-        let data= "const key='" +req.body.key+"';\n";
-        data+="const secret='" + req.body.secret+"';\n\n";
-        data+= "module.exports = {key,secret};\n";
-
-        fs.writeFile('Kraken_Keys.js', data, function(err) {
-          if (err) {
-            return console.error(err);
-            res.status(500).json({ error: err });
-          }
-
-          fs.readFile('Kraken_Keys.js', function (err, data) {
-            if (err) {
-              return console.error(err);
-              res.status(500).json({ error: err });
-            }
-            console.log("Asynchronous read: " + data.toString());
-            res.json ("Edit file successfull, restart the server if don't see the changes");
-          });
-        });
-
-
-      }else{
-        res.status(400).json({ error: "body params undefined" });
-      }
-
-    })();
-  }catch (err) {
-    res.status(500).json({ error: err });
-  }
-
-
-
-});*/
 
 
 // pairs XXBTZUSD - ETHXBT

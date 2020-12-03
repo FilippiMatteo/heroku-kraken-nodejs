@@ -8,7 +8,7 @@ const jsonServer = require('json-server');
 const server = jsonServer.create();
 const router = jsonServer.router('db.json');
 const middlewares = jsonServer.defaults();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 6666;
 
 server.use(middlewares);
 server.use(router);
@@ -17,7 +17,6 @@ server.listen(port);
 
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var krakenRouter = require('./routes/kraken');
 
 
@@ -35,7 +34,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/kraken', krakenRouter);
 
 
