@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var axios = require("axios");
 
-const port = 7777;
+const port = 3001;
 
 
 const KrakenClient = require('kraken-api');
