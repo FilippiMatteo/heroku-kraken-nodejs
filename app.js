@@ -8,7 +8,7 @@ const jsonServer = require('json-server');
 const server = jsonServer.create();
 const router = jsonServer.router('db.json');
 const middlewares = jsonServer.defaults();
-const port = process.env.PORT || 6666;
+const port =  6666;
 
 server.use(middlewares);
 server.use(router);
@@ -37,8 +37,8 @@ app.use('/', indexRouter);
 app.use('/kraken', krakenRouter);
 
 
-app.listen(process.env.PORT || 5555, function () {
-  console.log('listening on port 5555!');
+app.listen( 9999, function () {
+  console.log('listening on port 9999!');
 });
 
 
