@@ -37,7 +37,7 @@ app.use('/', indexRouter);
 app.use('/kraken', krakenRouter);
 
 
-app.listen(5555, function () {
+app.listen(process.env.PORT || 5555, function () {
   console.log('listening on port 5555!');
 });
 
