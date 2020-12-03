@@ -1,5 +1,5 @@
 {
-  "name": "node-kraken",
+  "name": "heroku-kraken-api",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -14,16 +14,11 @@
     "cors": "^2.8.5",
     "debug": "~2.6.9",
     "express": "~4.16.1",
-    "fs": "0.0.1-security",
     "json-server": "^0.16.3",
     "kraken-api": "^1.0.1",
-    "mongoose": "^5.9.18",
     "morgan": "~1.9.1",
     "mtproto-storage-fs": "^0.3.1",
     "telegram-api-js": "^1.2.9",
     "telegram-mtproto": "^2.2.2"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.4"
   }
 }
